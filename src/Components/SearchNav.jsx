@@ -1,26 +1,26 @@
 import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fillMusicSection } from "../Redux/actions";
+import { ADD_TO_SEARCH, fillMusicSection } from "../Redux/actions";
 import SingleSong from "./Singlesong";
 
-const MyCards = ({ title, artistSearch, typeSelect, stateSelect }) => {
+const SearchNav = ({ artistSearch }) => {
   const dispatch = useDispatch();
 
-  const resultOfSearch = useSelector((state) => state.playList[stateSelect]);
+  const resultOfSearch = useSelector((state) => state.playList.artistSearched);
 
   useEffect(() => {
-    dispatch(fillMusicSection(artistSearch, typeSelect));
-  }, []);
+    dispatch(fillMusicSection(artistSearch, ADD_TO_SEARCH));
+  }, [artistSearch]);
   return (
     <Row>
       <Col>
         <div>
-          <h2>{title}</h2>
+          <h2>Canzoni ricercate</h2>
           <div className="imgLinks py-3">
             <Row xs={1} sm={2} lg={3} xl={4}>
-              {resultOfSearch.map((singleSong, index) => (
-                <SingleSong key={artistSearch + index} singleSong={singleSong} />
+              {resultOfSearch.map((singleSong) => (
+                <SingleSong key={singleSong.id} singleSong={singleSong} />
               ))}
             </Row>
           </div>
@@ -29,4 +29,4 @@ const MyCards = ({ title, artistSearch, typeSelect, stateSelect }) => {
     </Row>
   );
 };
-export default MyCards;
+export default SearchNav;
